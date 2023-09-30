@@ -35,9 +35,8 @@ def stats():
 
     statistics = Stats(file_to_analyse, arguments)
     statistics.do_analysis()
-    # statistics.create_json_response()
-    # return statistics.response
-    return "OK\n"
+    statistics.create_json_response()
+    return statistics.response
 
 
 @app.route("/visualisation/", methods=["GET", "POST"])

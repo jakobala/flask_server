@@ -30,10 +30,29 @@ class Stats:
 
     def do_analysis(self):
         """Perform the statistical analysis of the file sent"""
-        df = pd.read_csv(self.initial_data, sep=";")
 
-        self.statistics = ""
+        # Reads the data
+        df = pd.read_csv(self.initial_data, sep=self.separator)
+
+        # Test that the required columns exist
+        if not {"PID", "Zeitindex"}.issubset(df.columns):
+            raise ValueError("PID and Zeitindex must be in the uploaded file")
+        if not self.column in df.columns:
+            raise ValueError(self.column, " must be in the uploaded file")
+
+        # Create subsets according to time and calculate the statistical parameters
+        df_sum = df.groupby("Zeitindex").sum()
+        df_mean = df.groupby("Zeitindex").mean()
+
+        # Merge the results into a new dataframe
+        df_merged = pd.concat(
+            [df_mean[self.column], df_sum[self.column]],
+            axis=1,
+            keys=["Mean", "Sum"],
+        )
+
+        self.statistics = df_merged
 
     def create_json_response(self):
         """Create the json response of calls that are using the Stat object"""
-        self.response = ""
+        self.response = self.statistics.to_json()
