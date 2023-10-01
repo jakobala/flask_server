@@ -1,6 +1,8 @@
 # Flask server
 This project is just a programming exercise. It is a flask server with one health endpoint that accepts GET, one stat endpoint that accepts POST of csv file, and one endpoint to visualize data.
 
+A log of the queries is saved under flask.log
+
 # Running the server
 The server can be run in two different way, independent from each other. Using usual python commands, or using Docker
 
