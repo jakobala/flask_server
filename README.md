@@ -10,7 +10,7 @@ Prerequisite: having python and pip installed
 The first time running the server, you will need to create a virtual environment and install the dependencies. Make sure beforehands that python and pip are installed on your computer
 
 ```BASH
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```

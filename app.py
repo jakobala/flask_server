@@ -5,19 +5,52 @@ from functions.general import (
 )
 
 from objects.stats import Stats
+from logging.config import dictConfig
 
 app = Flask(__name__)
 app.debug = False
 
+# Configuration of the logging
+dictConfig(
+    {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            }
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+                "formatter": "default",
+            },
+            "file": {
+                "class": "logging.FileHandler",
+                "filename": "flask.log",
+                "formatter": "default",
+            },
+        },
+        "root": {"level": "DEBUG", "handlers": ["console", "file"]},
+    }
+)
 
+
+# API routes
 @app.route("/")
 def api_root():
+    # Log system
+    app.logger.info("Query details: %s , %s", request.url, request.method)
+
     return "This is the root of the api"
 
 
 @app.route("/health/", methods=["GET"])
 def health():
     """This endpoint allows GET and only returns OK"""
+    # Log system
+    app.logger.info("Query details: %s , %s", request.url, request.method)
+
     return "OK\n"
 
 
@@ -32,6 +65,10 @@ def stats():
     If there are spaces in the name of the column, the user should replace them by %20 in the URL
     """
 
+    # Log system
+    app.logger.info("Query details: %s , %s", request.url, request.method)
+
+    # Retrieve and analyse the file
     file_to_analyse = retrieve_datastream_from_curl(request)
     arguments = retrieve_arguments_from_curl(request)
 
@@ -48,6 +85,8 @@ def visualisation():
     GET makes a visualisation of the test.csv document
     POST accepts a file as parameter and makes a visualisation of this file
     """
+    # Log system
+    app.logger.info("Query details: %s , %s", request.url, request.method)
 
     if request.method == "POST":
         return "Visualisation POST"
@@ -55,5 +94,6 @@ def visualisation():
     return "Visualisation GET"
 
 
+# Running the app
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
