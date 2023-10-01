@@ -4,12 +4,10 @@ from functions.general import (
     retrieve_arguments_from_curl,
 )
 
-# from functions.stats import analyse_file, create_json_response_for_stats
 from objects.stats import Stats
 
 app = Flask(__name__)
-app.debug = True
-app.config["MAX_CONTENT_LENGTH"] = 160 * 1000 * 1000
+app.debug = False
 
 
 @app.route("/")
