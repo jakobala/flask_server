@@ -26,8 +26,12 @@ def health():
 @app.route("/stats/", methods=["POST"])
 def stats():
     """
-    This endpoint allows POST and consume CSV files.
-    The outcome is an additional column in JSON that includes Sum and Mean.
+    This endpoint allows POST and consume CSV files with at least PID and Zeitindex columns.
+    The outcome is a JSON including Sum and Mean grouped by Zeitindex.
+    The user can specify the arguments column and sep in the URL
+    Column will be the column that is statistically analyzed
+    Sep is the separators of the csv file
+    If there are spaces in the name of the column, the user should replace them by %20 in the URL
     """
 
     file_to_analyse = retrieve_datastream_from_curl(request)

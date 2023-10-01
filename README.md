@@ -26,6 +26,9 @@ python flask_server.py
 ```BASH
 # cd $REPO_DIR 
 curl -X GET http://localhost:8080/health/
-curl -X POST --data-binary "@test.csv" http://localhost:8080/stats/\?column\=$column\&sep\=$separator
+
+#curl -X POST --data-binary "@test.csv" http://localhost:8080/stats/\?column\=$column\&sep\=$separator
 curl -X POST --data-binary "@test.csv" http://localhost:8080/stats/\?column\=Krankenhauskosten\&sep\=\;
+curl -X POST --data-binary "@test.csv" http://localhost:8080/stats/\?column\=ICD%20E11%20-%20liegt%20vor\&sep\=\;
+
 ```
