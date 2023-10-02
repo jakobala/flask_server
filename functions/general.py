@@ -1,4 +1,6 @@
 from io import StringIO
+import io
+from instance.default_variables import default_file, file_encoding_format
 
 
 def retrieve_datastream_from_curl(request):
@@ -15,8 +17,26 @@ def retrieve_datastream_from_curl(request):
     stream = stream.replace(b"\x80", b"")
 
     # We convert the stream to a string that can be read afterwards by pandas
-    file_as_string = str(stream, "iso-8859-1")
+    file_as_string = str(stream, file_encoding_format)
     data = StringIO(file_as_string)
+
+    return data
+
+
+def retrieve_datastream_from_default_file():
+    """Extracts the data received from the default data file"""
+
+    file_content = io.open(
+        default_file,
+        mode="r",
+        encoding=file_encoding_format,
+    )
+
+    # The stream contains € signs. This removes them so the column can be considered as numerical afterwards
+    file_without_currency = file_content.read().replace("\x80", "")
+
+    # We convert the stream to a string that can be read afterwards by pandas
+    data = StringIO(file_without_currency)
 
     return data
 

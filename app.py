@@ -1,14 +1,16 @@
+from logging.config import dictConfig
 from flask import Flask, request
 from functions.general import (
     retrieve_datastream_from_curl,
     retrieve_arguments_from_curl,
+    retrieve_datastream_from_default_file,
 )
-
+from functions.visualisation import visualize_file
 from objects.stats import Stats
-from logging.config import dictConfig
+from instance.default_variables import debug_mode
 
 app = Flask(__name__)
-app.debug = False
+app.debug = debug_mode
 
 # Configuration of the logging
 dictConfig(
@@ -89,9 +91,17 @@ def visualisation():
     app.logger.info("Query details: %s , %s", request.url, request.method)
 
     if request.method == "POST":
-        return "Visualisation POST"
+        file_to_analyse = retrieve_datastream_from_curl(request)
+        arguments = retrieve_arguments_from_curl(request)
+    else:
+        file_to_analyse = retrieve_datastream_from_default_file()
+        arguments = None
 
-    return "Visualisation GET"
+    statistics = Stats(file_to_analyse, arguments)
+
+    response = visualize_file(statistics)
+
+    return response
 
 
 # Running the app

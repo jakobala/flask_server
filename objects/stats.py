@@ -11,6 +11,7 @@ class Stats:
     column = "Krankenhauskosten"
 
     # Variables that will be modified during the calculations
+    read_dataframe = None
     statistics = None
     response = None
 
@@ -33,6 +34,7 @@ class Stats:
 
         # Reads the data
         df = pd.read_csv(self.initial_data, sep=self.separator)
+        self.read_dataframe = df
 
         # Test that the required columns exist
         if not {"PID", "Zeitindex"}.issubset(df.columns):
