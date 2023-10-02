@@ -1,6 +1,6 @@
 from io import StringIO
 import io
-from instance.default_variables import default_file, file_encoding_format
+from variables.default_variables import default_file, file_encoding_format
 
 
 def retrieve_datastream_from_curl(request):

@@ -7,7 +7,7 @@ from functions.general import (
 )
 from functions.visualisation import visualize_file
 from objects.stats import Stats
-from instance.default_variables import debug_mode
+from variables.default_variables import debug_mode
 
 app = Flask(__name__)
 app.debug = debug_mode
